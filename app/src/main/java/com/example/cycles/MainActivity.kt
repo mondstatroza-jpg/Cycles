@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,36 +13,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val edit1 = findViewById<EditText>(R.id.edit1)
+        val edit2 = findViewById<EditText>(R.id.edit2)
         val buttonOK = findViewById<Button>(R.id.buttonOK)
         val textResult = findViewById<TextView>(R.id.textResult)
 
         buttonOK.setOnClickListener {
-            val n = edit1.text.toString().toIntOrNull()
-            if (n == null || n <= 0) {
-                textResult.text = "Введите натуральное число n"
+            val x = edit1.text.toString().toDoubleOrNull()
+            val n = edit2.text.toString().toIntOrNull()
+            if (x == null || n == null || n <= 0) {
+                textResult.text = "Введите x и n"
                 return@setOnClickListener
             }
 
-            var fact = 1.0
+            var sum = 0.0
             for (i in 1..n) {
-                fact *= i
+                sum += x / 4.0.pow(i) + x / 5.0.pow(i + 2)
             }
 
-            var k = 1.0
-            var found = false
-            while (k * (k + 1) * (k + 2) <= fact) {
-                if (k * (k + 1) * (k + 2) == fact) {
-                    found = true
-                    break
-                }
-                k++
-            }
-
-            if (found) {
-                textResult.text = "$n! = ${k.toInt()} * ${(k + 1).toInt()} * ${(k + 2).toInt()}"
-            } else {
-                textResult.text = "$n! нельзя представить в виде произведения трех последовательных чисел"
-            }
+            textResult.text = "Сумма = $sum"
         }
     }
 }
