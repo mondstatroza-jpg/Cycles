@@ -12,24 +12,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val edit1 = findViewById<EditText>(R.id.edit1)
-        val edit2 = findViewById<EditText>(R.id.edit2)
         val buttonOK = findViewById<Button>(R.id.buttonOK)
         val textResult = findViewById<TextView>(R.id.textResult)
 
         buttonOK.setOnClickListener {
-            val a = edit1.text.toString().toDoubleOrNull()
-            val n = edit2.text.toString().toIntOrNull()
-            if (a == null || n == null || n <= 0) {
-                textResult.text = "Введите a и n"
+            val n = edit1.text.toString().toIntOrNull()
+            if (n == null || n <= 0) {
+                textResult.text = "Введите натуральное число n"
                 return@setOnClickListener
             }
 
             var sum = 0.0
-            var product = 1.0
+            var fact = 1.0
 
             for (i in 1..n) {
-                product *= (a + i - 1)
-                sum += 1.0 / product
+                fact *= i
+                sum += 1.0 / fact
             }
 
             textResult.text = "Сумма = $sum"
