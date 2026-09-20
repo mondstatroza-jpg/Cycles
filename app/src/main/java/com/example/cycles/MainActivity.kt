@@ -1,20 +1,42 @@
 package com.example.cycles
 
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import kotlin.math.abs
+import com.example.cycles.R
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        val edit1 = findViewById<EditText>(R.id.edit1)
+        val buttonOK = findViewById<Button>(R.id.buttonOK)
+        val textResult = findViewById<TextView>(R.id.textResult)
+
+        buttonOK.setOnClickListener {
+            val epsilon = edit1.text.toString().toDoubleOrNull()
+            if (epsilon == null || epsilon <= 0) {
+                textResult.text = "Введите положительное число (например, 0.0001)"
+                return@setOnClickListener
+            }
+
+            var sum = 0.0
+            var i = 1
+            var lastTerm = 0.0
+            var count = 0
+
+            while (true) {
+                lastTerm = 1.0 / (i * i)
+                if (abs(lastTerm) < epsilon) break
+                sum += lastTerm
+                i++
+                count++
+            }
+
+            textResult.text = "Сумма = $sum\nПоследнее слагаемое = $lastTerm\nКоличество повторений = $count"
         }
     }
 }
