@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,28 +16,25 @@ class MainActivity : AppCompatActivity() {
         val textResult = findViewById<TextView>(R.id.textResult)
 
         buttonOK.setOnClickListener {
-            val epsilon = edit1.text.toString().toDoubleOrNull()
-            if (epsilon == null || epsilon <= 0) {
-                textResult.text = "Введите epsilon (например, 0.0001)"
+            val a = edit1.text.toString().toDoubleOrNull()
+            if (a == null) {
+                textResult.text = "Введите число a"
                 return@setOnClickListener
             }
 
-            var sum = 0.0
-            var fact = 1.0
-            var i = 1
-            var lastTerm = 0.0
-            var count = 0
-
-            while (true) {
-                fact *= i
-                lastTerm = 1.0 / fact
-                if (abs(lastTerm) < epsilon) break
-                sum += lastTerm
-                i += 2
-                count++
+            if (a > 7) {
+                textResult.text = "При a > 7 результат не может быть получен"
+                return@setOnClickListener
             }
 
-            textResult.text = "Сумма = $sum\nПоследнее слагаемое = $lastTerm\nКоличество повторений = $count"
+            var sum = 1.0
+            var i = 2
+            while (sum <= a) {
+                sum += 1.0 / i
+                i++
+            }
+
+            textResult.text = "Первое число, большее $a = $sum"
         }
     }
 }
