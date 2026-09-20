@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import kotlin.math.pow
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,24 +17,28 @@ class MainActivity : AppCompatActivity() {
         val textResult = findViewById<TextView>(R.id.textResult)
 
         buttonOK.setOnClickListener {
-            val x = edit1.text.toString().toDoubleOrNull()
-            if (x == null) {
-                textResult.text = "Введите число x"
+            val epsilon = edit1.text.toString().toDoubleOrNull()
+            if (epsilon == null || epsilon <= 0) {
+                textResult.text = "Введите epsilon (например, 0.0001)"
                 return@setOnClickListener
             }
 
-            var numerator = 1.0
-            var denominator = 1.0
+            var sum = 0.0
+            var fact = 1.0
+            var i = 1
+            var lastTerm = 0.0
+            var count = 0
 
-            // В задании 2, 4, 8, 16, 32, 64, 128 -> 7 множителей
-            for (i in 1..7) {
-                val powerOfTwo = 2.0.pow(i)
-                numerator *= (x - powerOfTwo)
-                denominator *= (x - (powerOfTwo - 1))
+            while (true) {
+                fact *= i
+                lastTerm = 1.0 / fact
+                if (abs(lastTerm) < epsilon) break
+                sum += lastTerm
+                i += 2
+                count++
             }
 
-            val result = numerator / denominator
-            textResult.text = "Результат = $result"
+            textResult.text = "Сумма = $sum\nПоследнее слагаемое = $lastTerm\nКоличество повторений = $count"
         }
     }
 }
