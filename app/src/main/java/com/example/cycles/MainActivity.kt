@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,21 +17,24 @@ class MainActivity : AppCompatActivity() {
         val textResult = findViewById<TextView>(R.id.textResult)
 
         buttonOK.setOnClickListener {
-            val n = edit1.text.toString().toIntOrNull()
-            if (n == null || n <= 0) {
-                textResult.text = "Введите натуральное число n"
+            val x = edit1.text.toString().toDoubleOrNull()
+            if (x == null) {
+                textResult.text = "Введите число x"
                 return@setOnClickListener
             }
 
-            var sum = 0.0
-            var fact = 1.0
+            var numerator = 1.0
+            var denominator = 1.0
 
-            for (i in 1..n) {
-                fact *= i
-                sum += 1.0 / fact
+            // В задании 2, 4, 8, 16, 32, 64, 128 -> 7 множителей
+            for (i in 1..7) {
+                val powerOfTwo = 2.0.pow(i)
+                numerator *= (x - powerOfTwo)
+                denominator *= (x - (powerOfTwo - 1))
             }
 
-            textResult.text = "Сумма = $sum"
+            val result = numerator / denominator
+            textResult.text = "Результат = $result"
         }
     }
 }
