@@ -16,25 +16,32 @@ class MainActivity : AppCompatActivity() {
         val textResult = findViewById<TextView>(R.id.textResult)
 
         buttonOK.setOnClickListener {
-            val a = edit1.text.toString().toDoubleOrNull()
-            if (a == null) {
-                textResult.text = "Введите число a"
+            val n = edit1.text.toString().toIntOrNull()
+            if (n == null || n <= 0) {
+                textResult.text = "Введите натуральное число n"
                 return@setOnClickListener
             }
 
-            if (a > 7) {
-                textResult.text = "При a > 7 результат не может быть получен"
-                return@setOnClickListener
+            var fact = 1.0
+            for (i in 1..n) {
+                fact *= i
             }
 
-            var sum = 1.0
-            var i = 2
-            while (sum <= a) {
-                sum += 1.0 / i
-                i++
+            var k = 1.0
+            var found = false
+            while (k * (k + 1) * (k + 2) <= fact) {
+                if (k * (k + 1) * (k + 2) == fact) {
+                    found = true
+                    break
+                }
+                k++
             }
 
-            textResult.text = "Первое число, большее $a = $sum"
+            if (found) {
+                textResult.text = "$n! = ${k.toInt()} * ${(k + 1).toInt()} * ${(k + 2).toInt()}"
+            } else {
+                textResult.text = "$n! нельзя представить в виде произведения трех последовательных чисел"
+            }
         }
     }
 }
